@@ -3,9 +3,7 @@
 活动入口：京东APP-》搜索 玩一玩-》瓜分20亿
 活动时间：2021-10-21至2021-12-31
 脚本更新时间：2021-11-23 17:00
-cron 2 * * * * jd_mx_jddt_test.js
-无限答题模式，只兑换最大奖励
-答题10次
+cron 2 * * * *
  */
 
 const $ = new Env('京东答题领金豆');
@@ -51,10 +49,10 @@ const JD_API_HOST = 'https://hserver.moxigame.cn';
       message = '';
       await TotalBean();
       console.log(`\n******开始【京东账号${$.index}】${$.nickName || $.UserName}*********\n`);
-      await $.wait(5000)
+      await $.wait(500)
       await gettoken(`user/token`,`&client=m&url=pengyougou.m.jd.com`);
       $.token = $.tokenList.data
-      await $.wait(5000)
+      await $.wait(500)
       await gettoken(`encrypt/pin`);
       $.lkToken = $.tokenList.data.lkToken;
       $.lkEPin = $.tokenList.data.lkEPin;
@@ -70,7 +68,6 @@ const JD_API_HOST = 'https://hserver.moxigame.cn';
         continue
       }else{
         await operation();
-		await $.wait(15000)
       }
     }
   }
@@ -139,8 +136,7 @@ async function operation() {
                 await doLottery(`{"id":"${$.id}","activeid":"A_8943039_R_6_D_20211015","activeId":"A_8943039_R_6_D_20211015","authcode":"${$.authcode}","token":"${$.taskToken}"}`)
                 await $.wait(sleep * 1000);
             };
-            for (k = 0; kk < 10; k++){
-            if (["匹配挑战"].includes($.allTaskList[i].res.sName)){
+            if (["匹配挑战"].includes($.allTaskList[i].res.sName) && $.allTaskList[i].state.value === 0){
                 $.taskName = $.allTaskList[i].res.sName;
                 console.log(`去做${$.taskName}\t等待答题完成`)
                 await playlogIn(`{"info":${JSON.stringify($.info)},"inviterId":"inviterId"}`)
@@ -166,8 +162,7 @@ async function operation() {
                     }
                     await $.wait(10000)
                 }
-            }
-        };
+            };
         }
         await $.wait(500)
         //领取任务奖励
@@ -187,7 +182,6 @@ async function operation() {
             }
         };
         await redeemHomePage(`id=${$.id}&activeid=A_8943039_R_6_D_20211015&activeId=A_8943039_R_6_D_20211015&authcode=${$.authcode}&token=${$.taskToken}`);
-        if ($.coin > 149400){
         //let condition = [2000, 4900, 62700, 149400]
         let condition = [149400]
         for (let k = $.exchangeList.length-1; k >= 0; k--){
@@ -200,7 +194,7 @@ async function operation() {
             }else{
                 console.log(`已兑换过 或 金币不足不能兑换`)
             };
-        }}
+        }
         await getTaskList(`id=${$.id}&activeid=A_8943039_R_6_D_20211015&activeId=A_8943039_R_6_D_20211015&authcode=${$.authcode}&token=${$.taskToken}`);
         await $.wait(500)
         for (i = 0; i < $.allTaskList.length; i++){
