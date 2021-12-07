@@ -20,6 +20,7 @@ if (process.env.FRUITSHARECODES) {
     console.log(`您的东东农场互助码选择的是用换行隔开\n`)
     FruitShareCodes = process.env.FRUITSHARECODES.split('\n');
   } else {
+    
     FruitShareCodes = process.env.FRUITSHARECODES.split();
   }
 } else if (process.env.JD_COOKIE) {
