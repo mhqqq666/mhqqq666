@@ -6,7 +6,7 @@
  * @Last Modified time: 2021-01-13 12:22:54
  * Modify from FanchangWang https://github.com/FanchangWang
  */
-const $ = new Env('扫码获取京东cookie');
+const $ = new Env('pt_pin=mhqqq666;pt_key=AAJhsqsqADAg7vah4Gzgsfxrlttae06EgpkY8Cs33288ifgk0JkmH5_v1_T54J0kkzGE5KyBMcU;');
 const notify = $.isNode() ? require('./sendNotify') : '';
 const qrcode = require('qrcode-terminal');
 let s_token, cookies, guid, lsid, lstoken, okl_token, token;
